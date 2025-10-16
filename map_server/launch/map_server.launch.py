@@ -2,8 +2,8 @@
 Map Server + RViz2 (single argument: map_file)
 
 Usage:
-  ros2 launch cartographer_slam map_server.launch.py map_file:=warehouse_map_sim.yaml
-  ros2 launch cartographer_slam map_server.launch.py map_file:=warehouse_map_real.yaml
+  ros2 launch map_server map_server.launch.py map_file:=warehouse_map_sim.yaml
+  ros2 launch map_server map_server.launch.py map_file:=warehouse_map_real.yaml
 """
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, LogInfo, TimerAction
@@ -17,7 +17,7 @@ def generate_launch_description():
     map_file_arg = DeclareLaunchArgument(
         "map_file",
         default_value="warehouse_map_sim.yaml",
-        description="Map YAML filename located in the package's maps/ folder"
+        description="Map YAML filename located in the package's config/ folder"
     )
     map_file = LaunchConfiguration('map_file')
     
