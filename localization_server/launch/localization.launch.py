@@ -43,7 +43,7 @@ def generate_launch_description():
         FindPackageShare("localization_server"),
         "rviz",
             PythonExpression([
-            "'localizer_sim.yaml' if (", is_sim_expr, ") else 'localizer_real.rviz'"
+            "'localizer_sim.rviz' if (", is_sim_expr, ") else 'localizer_real.rviz'"
         ])
     ])
 
