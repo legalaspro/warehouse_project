@@ -50,6 +50,8 @@ def generate_launch_description():
                     {'node_names': ['map_server']}]
     )
 
+    
+
     # RViz2 Node with Delay
     rviz_node = Node(
         package='rviz2',
