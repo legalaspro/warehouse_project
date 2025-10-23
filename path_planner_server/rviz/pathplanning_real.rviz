@@ -9,7 +9,7 @@ Panels:
         - /ParticleCloud1/Topic1
         - /Global Footprint1
         - /Local Footrprint1
-      Splitter Ratio: 0.5
+      Splitter Ratio: 0.7088235020637512
     Tree Height: 553
   - Class: rviz_common/Selection
     Name: Selection
@@ -87,19 +87,19 @@ Visualization Manager:
         robot_cart_laser:
           Value: true
         robot_cart_laser_noisy:
-          Value: true
+          Value: false
         robot_cart_laser_noisy_0:
-          Value: true
+          Value: false
         robot_docking_station_laser:
-          Value: true
+          Value: false
         robot_docking_station_laser_noisy:
-          Value: true
+          Value: false
         robot_docking_station_laser_noisy_0:
-          Value: true
+          Value: false
         robot_elevator_base_link:
-          Value: true
+          Value: false
         robot_elevator_platform_link:
-          Value: true
+          Value: false
         robot_front_cover_link:
           Value: false
         robot_front_laser_base_link:
@@ -107,19 +107,19 @@ Visualization Manager:
         robot_front_laser_link:
           Value: true
         robot_front_rgbd_camera_depth_frame:
-          Value: true
+          Value: false
         robot_front_rgbd_camera_depth_optical_frame:
-          Value: true
+          Value: false
         robot_front_rgbd_camera_link:
-          Value: true
+          Value: false
         robot_front_rgbd_camera_rgb_base_link:
-          Value: true
+          Value: false
         robot_front_rgbd_camera_rgb_optical_frame:
-          Value: true
+          Value: false
         robot_imu_link:
-          Value: true
+          Value: false
         robot_left_wheel_link:
-          Value: true
+          Value: false
         robot_odom:
           Value: true
         robot_omni_backwheel_link:
@@ -129,14 +129,14 @@ Visualization Manager:
         robot_omni_front_rightwheel_link:
           Value: false
         robot_right_wheel_link:
-          Value: true
+          Value: false
         robot_top_cover_link:
           Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
-      Show Names: false
+      Show Names: true
       Tree:
         map:
           robot_odom:
@@ -224,14 +224,14 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz_default_plugins/LaserScan
       Color: 255; 0; 0
-      Color Transformer: FlatColor
+      Color Transformer: Intensity
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 8000
+      Max Intensity: 6071
       Min Color: 0; 0; 0
-      Min Intensity: 0
+      Min Intensity: 179
       Name: LaserScan
       Position Transformer: XYZ
       Selectable: true
@@ -508,16 +508,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 15.508606910705566
+      Distance: 11.302237510681152
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.14743641018867493
-        Y: 0.26409944891929626
-        Z: -0.450209379196167
+        X: 2.434950351715088
+        Y: -0.7511883974075317
+        Z: -1.3983322381973267
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
