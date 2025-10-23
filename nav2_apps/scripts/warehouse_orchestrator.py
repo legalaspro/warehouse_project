@@ -141,6 +141,11 @@ class WarehouseOrchestrator(Node):
                 self.base_footprint_frame = param.value
             elif param.name == 'cmd_pub_topic':
                 self.cmd_pub_topic = param.value
+                # Destroy the old publisher if it exists
+                if hasattr(self, 'cmd_pub') and self.cmd_pub is not None:
+                    self.destroy_publisher(self.cmd_pub)
+                self.cmd_pub = self.create_publisher(Twist, self.cmd_pub_topic, 10)
+                self.get_logger().info(f"Cmd Velocity publisher moved to: {self.cmd_pub_topic}")
             
             # Integer/Count parameters
             elif param.name == 'lift_publish_count':
@@ -337,7 +342,7 @@ class WarehouseOrchestrator(Node):
             chart_frame_tf.transform.rotation.w = quat[3]
 
             self.tf_static_broadcaster.sendTransform(chart_frame_tf)
-            self.rate.sleep()   # Brief wait for TF propagation
+            # self.rate.sleep()   # Brief wait for TF propagation
             self.get_logger().info(f"Successfully published {self.CART_FRAME} TF.")
             return True
         except TransformException as ex:
@@ -347,6 +352,7 @@ class WarehouseOrchestrator(Node):
     def move_under_shelf(self):
         """Move under the shelf using TF-based control (phase 1: approach, phase 2: advance)."""
         phase = 1 # Start with approach phase
+        self.get_logger().info("Start Move under Shelf")
 
         while rclpy.ok():
             try:
@@ -438,7 +444,11 @@ class WarehouseOrchestrator(Node):
             # Compute and publish command
             cmd = Twist()
             cmd.linear.x = 0.0
-            cmd.angular.z = max(-self.w_max, min(self.kp_yaw * error_yaw, self.w_max))
+            min_angular_z = 0.1 
+            angular_z = self.kp_yaw * error_yaw
+            if abs(angular_z) < min_angular_z:
+                angular_z = math.copysign(min_angular_z, error_yaw)
+            cmd.angular.z = max(-self.w_max, min(angular_z, self.w_max))
             self.cmd_pub.publish(cmd)
             self.rate.sleep()
         
@@ -450,13 +460,13 @@ class WarehouseOrchestrator(Node):
         pub = self.liftup_pub if raise_up else self.liftdown_pub
         for _ in range(self.lift_publish_count):
             pub.publish(String())
-            self.rate.sleep()
+            self.log_rate.sleep()
         
         self.get_logger().info(f"Lifted the shelf {'up' if raise_up else 'down'}.")
         self.update_footprint(attached=raise_up)
         self.update_controller_critics(attached=True) # we always have obstacle footprint
         # self.update_costmaps(attached=raise_up)
-        self.log_rate.sleep() # add sleep for 1 sec
+        # self.log_rate.sleep() # add sleep for 1 sec
 
     def update_footprint(self, attached: bool = False):
         """Update robot footprint polygon for costmaps."""
