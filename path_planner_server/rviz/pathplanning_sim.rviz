@@ -7,7 +7,8 @@ Panels:
         - /Global Options1
         - /Map1/Topic1
         - /ParticleCloud1/Topic1
-        - /Local Footrprint1/Topic1
+        - /Global Footprint1
+        - /Local Footrprint1
       Splitter Ratio: 0.5
     Tree Height: 553
   - Class: rviz_common/Selection
@@ -53,7 +54,7 @@ Visualization Manager:
       Class: rviz_default_plugins/Map
       Color Scheme: map
       Draw Behind: false
-      Enabled: false
+      Enabled: true
       Name: Map
       Topic:
         Depth: 5
@@ -69,7 +70,7 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /map_updates
       Use Timestamp: false
-      Value: false
+      Value: true
     - Class: rviz_default_plugins/TF
       Enabled: true
       Frame Timeout: 15
@@ -86,7 +87,7 @@ Visualization Manager:
         robot_base_link:
           Value: false
         robot_evelator_base_link:
-          Value: false
+          Value: true
         robot_front_cover_link:
           Value: false
         robot_front_laser_base_link:
@@ -136,84 +137,21 @@ Visualization Manager:
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-        Value: /rb1_robot/robot_description
-      Enabled: true
+        Value: ""
+      Enabled: false
       Links:
         All Links Enabled: true
         Expand Joint Details: false
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        robot_base_docking_contact_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        robot_base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        robot_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_evelator_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_evelator_platform_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_front_cover_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_front_laser_base_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_left_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_omni_backwheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_omni_front_leftwheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_omni_front_rightwheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_right_wheel_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        robot_top_cover_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
       Mass Properties:
         Inertia: false
         Mass: false
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
-      Value: true
+      Value: false
       Visual Enabled: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
@@ -225,7 +163,7 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz_default_plugins/LaserScan
       Color: 255; 0; 0
-      Color Transformer: FlatColor
+      Color Transformer: Intensity
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
@@ -402,15 +340,15 @@ Visualization Manager:
       Enabled: true
       Name: Global Costmap
       Topic:
-        Depth: 5
-        Durability Policy: Volatile
+        Depth: 1
+        Durability Policy: Transient Local
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /global_costmap/costmap
       Update Topic:
-        Depth: 5
-        Durability Policy: Volatile
+        Depth: 1
+        Durability Policy: Transient Local
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /global_costmap/costmap_updates
@@ -423,15 +361,15 @@ Visualization Manager:
       Enabled: true
       Name: Local Costmap
       Topic:
-        Depth: 5
-        Durability Policy: Volatile
+        Depth: 1
+        Durability Policy: Transient Local
         Filter size: 10
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /local_costmap/costmap
       Update Topic:
-        Depth: 5
-        Durability Policy: Volatile
+        Depth: 1
+        Durability Policy: Transient Local
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /local_costmap/costmap_updates
@@ -443,7 +381,7 @@ Visualization Manager:
       Enabled: true
       Name: Global Footprint
       Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
         Filter size: 10
         History Policy: Keep Last
@@ -456,7 +394,7 @@ Visualization Manager:
       Enabled: true
       Name: Local Footrprint
       Topic:
-        Depth: 5
+        Depth: 1
         Durability Policy: Volatile
         Filter size: 10
         History Policy: Keep Last

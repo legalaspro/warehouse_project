@@ -3,7 +3,7 @@ Path Planner + RViz2 launch (sim/real toggle).
 
 Usage:
   ros2 launch path_planner_server pathplanner.launch.py use_sim_time:=True
-  ros2 launch path_planner_server pathplanner.launch.py  use_sim_time:=False
+  ros2 launch path_planner_server pathplanner.launch.py use_sim_time:=False
 """
 
 from launch import LaunchDescription
@@ -53,6 +53,10 @@ def generate_launch_description():
         PythonExpression([
             "'recoveries_sim.yaml' if (", is_sim, ") else 'recoveries_real.yaml'"
         ])])
+    behavior_bt_xml = PathJoinSubstitution([
+        path_config_dir,
+        'navigate_w_replanning_and_recovery.xml'
+    ])
     cmd_vel_topic = PythonExpression([ "'/diffbot_base_controller/cmd_vel_unstamped' if (", is_sim, ") else '/cmd_vel'"])
     
     rviz_config = PathJoinSubstitution([
@@ -65,7 +69,8 @@ def generate_launch_description():
 
      # --- Logs ---
     log_configs = LogInfo(msg=["Configs: ", controller_yaml, ", ", 
-        controller_yaml, ", ", bt_navigator_yaml, ", ", planner_yaml, ", ", recovery_yaml])
+        controller_yaml, ", ", bt_navigator_yaml, ", ", planner_yaml, ", ", recovery_yaml, 
+        ', ', behavior_bt_xml])
     log_cmd_vel = LogInfo(msg=["Cmd Vel Topic: ", cmd_vel_topic])
     log_rviz_config = LogInfo(msg=["Rviz Config: ", rviz_config])
 
@@ -92,8 +97,9 @@ def generate_launch_description():
         Node(
             package='nav2_behaviors',
             executable='behavior_server',
-            name='recoveries_server',
+            name='behavior_server',
             parameters=[recovery_yaml],
+            remappings=[('/cmd_vel', cmd_vel_topic)],
             output='screen'),
 
         Node(
@@ -101,17 +107,20 @@ def generate_launch_description():
             executable='bt_navigator',
             name='bt_navigator',
             output='screen',
-            parameters=[bt_navigator_yaml]),
+            parameters=[bt_navigator_yaml, { 'default_nav_to_pose_bt_xml' : behavior_bt_xml}]
+        ),
 
         Node(
             package='nav2_lifecycle_manager',
             executable='lifecycle_manager',
             name='lifecycle_manager_pathplanner',
             output='screen',
-            parameters=[{'autostart': True},
-                        {'node_names': ['planner_server',
+            parameters=[{'autostart': True,
+                        'transition_timeout': 20.0,   # give configure more time
+                        'bond_timeout': 0.0 ,          # don’t fail on bond formation delays
+                        'node_names': ['planner_server',
                                         'controller_server',
-                                        'recoveries_server',
+                                        'behavior_server',
                                         'bt_navigator']}]),
         
          TimerAction(
