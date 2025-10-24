@@ -76,7 +76,17 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        cart_frame:
+          Value: true
         map:
+          Value: true
+        robot_ar_marker_1:
+          Value: true
+        robot_ar_marker_6:
+          Value: true
+        robot_ar_marker_noisy_1:
+          Value: true
+        robot_ar_marker_noisy_6:
           Value: true
         robot_base_docking_contact_link:
           Value: false
@@ -139,7 +149,17 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
+          cart_frame:
+            {}
           robot_odom:
+            robot_ar_marker_1:
+              {}
+            robot_ar_marker_6:
+              {}
+            robot_ar_marker_noisy_1:
+              {}
+            robot_ar_marker_noisy_6:
+              {}
             robot_base_footprint:
               robot_base_link:
                 robot_elevator_base_link:
@@ -229,9 +249,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 6071
+      Max Intensity: 4655
       Min Color: 0; 0; 0
-      Min Intensity: 179
+      Min Intensity: 195
       Name: LaserScan
       Position Transformer: XYZ
       Selectable: true
@@ -286,7 +306,7 @@ Visualization Manager:
     - Alpha: 1
       Class: nav2_rviz_plugins/ParticleCloud
       Color: 255; 25; 0
-      Enabled: false
+      Enabled: true
       Max Arrow Length: 0.30000001192092896
       Min Arrow Length: 0.019999999552965164
       Name: ParticleCloud
@@ -298,7 +318,7 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Best Effort
         Value: /particle_cloud
-      Value: false
+      Value: true
     - Angle Tolerance: 0.10000000149011612
       Class: rviz_default_plugins/Odometry
       Covariance:
