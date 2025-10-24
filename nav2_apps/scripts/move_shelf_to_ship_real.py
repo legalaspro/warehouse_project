@@ -5,10 +5,22 @@ from rclpy.executors import MultiThreadedExecutor
 from rclpy.parameter import Parameter
 from warehouse_orchestrator import WarehouseOrchestrator  
 from rclpy.logging import LoggingSeverity
+import argparse
+import sys
 
-def main():
+def main(args=None):
+
+    parser = argparse.ArgumentParser(description='Warehouse Orchestrator Node')
+    parser.add_argument('--debug', action='store_true', help='Enable DEBUG logging')
+    parsed_args = parser.parse_args(args=args[1:] if args else sys.argv[1:])
+
     rclpy.init()
     node = WarehouseOrchestrator()
+
+    # Set log level based on flag
+    log_level = LoggingSeverity.DEBUG if parsed_args.debug else LoggingSeverity.INFO
+    node.get_logger().set_level(log_level)
+    node.get_logger().info(f'Set log level to {"DEBUG" if parsed_args.debug else "INFO"}')
 
     # Set real-specific params
     params = [
@@ -53,4 +65,4 @@ def main():
             pass
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv)
