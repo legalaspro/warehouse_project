@@ -54,6 +54,7 @@ class WarehouseOrchestrator(Node):
         self.declare_parameter('target_offset', 0.4)   # Advance distance
         self.declare_parameter('yaw_gate', 0.5)  # ~30deg: rotate-in-place when misaligned
         self.declare_parameter('rotate_yaw_tol', 0.05) # Tolerance about 3 degrees
+        self.declare_parameter('rotate_min_vel', 0.1) # Minimum angular velocity to rotate
         # Leg detection configs
         self.declare_parameter('leg_intensity_threshold', 2000)
         self.declare_parameter('min_points_per_leg', 3)
@@ -81,6 +82,7 @@ class WarehouseOrchestrator(Node):
         self.target_offset = self.get_parameter('target_offset').value
         self.yaw_gate = self.get_parameter('yaw_gate').value
         self.rotate_yaw_tol = self.get_parameter('rotate_yaw_tol').value
+        self.rotate_min_vel = self.get_parameter('rotate_min_vel').value
         self.leg_intensity_threshold = self.get_parameter('leg_intensity_threshold').value
         self.min_points_per_leg = self.get_parameter('min_points_per_leg').value
         # Fetch and reshape footprints
@@ -172,6 +174,8 @@ class WarehouseOrchestrator(Node):
                 self.yaw_gate = param.value
             elif param.name == 'rotate_yaw_tol':
                 self.rotate_yaw_tol = param.value
+            elif param.name == 'rotate_min_vel':
+                self.rotate_min_vel = param.value
             elif param.name == 'leg_intensity_threshold':
                 self.leg_intensity_threshold = param.value
             elif param.name == 'footprint_robot_radius':
@@ -231,6 +235,7 @@ class WarehouseOrchestrator(Node):
    
     def position_under_shelf(self):
         """Position the robot under the shelf: detect legs, publish TF, move under, rotate."""
+        self.log_rate.sleep() # add small sleep
         if self.latest_scan is None:
             self.get_logger().error("No LaserScan received yet.")
             return False
@@ -444,10 +449,9 @@ class WarehouseOrchestrator(Node):
             # Compute and publish command
             cmd = Twist()
             cmd.linear.x = 0.0
-            min_angular_z = 0.1 
             angular_z = self.kp_yaw * error_yaw
-            if abs(angular_z) < min_angular_z:
-                angular_z = math.copysign(min_angular_z, error_yaw)
+            if abs(angular_z) < self.rotate_min_vel:
+                angular_z = math.copysign(self.rotate_min_vel, error_yaw)
             cmd.angular.z = max(-self.w_max, min(angular_z, self.w_max))
             self.cmd_pub.publish(cmd)
             self.rate.sleep()

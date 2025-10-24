@@ -29,6 +29,7 @@ def main():
         Parameter(name='target_offset', value=0.45),
         Parameter(name='yaw_gate', value=0.2),# 11 degrees gate
         Parameter(name='rotate_yaw_tol', value=0.05),
+        Parameter(name='rotate_min_vel', value=0.10), # min requiered speed for robot
         # Leg detection configs
         Parameter(name='leg_intensity_threshold', value=2000),
         Parameter(name='min_points_per_leg', value=5),
