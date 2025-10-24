@@ -41,10 +41,11 @@ class ShelfHandlerNode(Node):
         self.v_min = 0.1  # Min linear speed (m/s)
         self.v_max = 0.2  # Max linear speed (m/s)
         self.w_max = 1.0  # Max angular speed (rad/s)
-        self.stop_dist = 0.15  # Stopping distance tolerance (m)
-        self.yaw_gate = 0.2  # Yaw error threshold to allow linear motion
+        self.stop_dist = 0.175  # Stopping distance tolerance (m)
+        self.yaw_gate = 0.15  # Yaw error threshold to allow linear motion
         self.target_offset = 0.3  # Additional advance distance in phase 2 (m)
         self.rotate_yaw_tol = 0.0175  # Rotation tolerance (rad) 3 degree
+        self.rotate_min_vel = 0.15 # Rotation min velocity
 
         # Callback group for reentrant callbacks
         reentrant_group = ReentrantCallbackGroup()
@@ -290,10 +291,9 @@ class ShelfHandlerNode(Node):
             # Compute and publish command
             cmd = Twist()
             cmd.linear.x = 0.0
-            min_angular_z = 0.1 
             angular_z = self.kp_yaw * error_yaw
-            if abs(angular_z) < min_angular_z:
-                angular_z = math.copysign(min_angular_z, error_yaw)
+            if abs(angular_z) < self.rotate_min_vel:
+                angular_z = math.copysign(self.rotate_min_vel, error_yaw)
             cmd.angular.z = max(-self.w_max, min(angular_z, self.w_max))
             self.cmd_pub.publish(cmd)
             self.rate.sleep()
@@ -314,11 +314,11 @@ def main(args=None):
     spin_thread.start()
     
     try:
+        time.sleep(2.0)  # Adjust based on your setup
         if len(sys.argv) > 1:
             node.rotate_degrees()
-        elif len(sys.argv) == 0:
+        elif len(sys.argv) == 1:
             # Wait briefly for initial scan data if needed
-            time.sleep(2.0)  # Adjust based on your setup
             node.position_under_shelf()
         
     finally:
